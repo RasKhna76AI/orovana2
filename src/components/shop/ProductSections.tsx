@@ -99,7 +99,6 @@ const ProductSections = ({ onProductClick, onSeeAllClick }: ProductSectionsProps
           </div>
         </div>
 
-        <button className="w-full bg-forest-green text-white py-2 rounded-lg font-semibold hover:bg-green-800 transition-colors flex items-center justify-center space-x-2">
           onClick={async () => {
             try {
               await addToCart(product.id);
