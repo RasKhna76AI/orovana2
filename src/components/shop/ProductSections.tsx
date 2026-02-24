@@ -97,7 +97,7 @@ const ProductSections = ({ onProductClick, onSeeAllClick }: ProductSectionsProps
               <span className="text-sm text-gray-500 line-through">₹{product.original_price}</span>
             )}
           </div>
-        </div>
+        </div> 
 
           onClick={async () => {
             try {
