@@ -1,86 +1,18 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
-import { useAuth } from '../../contexts/AuthContext';
+import { useCart } from '../../contexts/CartContext';
 
-const CartSection = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+interface CartSectionProps {
+  onCheckout?: () => void;
+}
 
-  useEffect(() => {
-    if (user) {
-      fetchCartItems();
-    }
-  }, [user]);
+const CartSection = ({ onCheckout }: CartSectionProps) => {
+  const { cartItems, loading, updateQuantity, removeFromCart, getCartTotal } = useCart();
 
-  const fetchCartItems = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('cart_items')
-        .select(`
-          *,
-          products (
-            id,
-            name,
-            price,
-            original_price,
-            images,
-            stock_quantity
-          )
-        `)
-        .eq('user_id', user?.id);
-
-      if (error) throw error;
-      setCartItems(data || []);
-    } catch (error) {
-      console.error('Error fetching cart items:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateQuantity = async (itemId: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-
-    try {
-      const { error } = await supabase
-        .from('cart_items')
-        .update({ quantity: newQuantity })
-        .eq('id', itemId);
-
-      if (error) throw error;
-      
-      setCartItems(items => 
-        items.map((item: any) => 
-          item.id === itemId ? { ...item, quantity: newQuantity } : item
-        )
-      );
-    } catch (error) {
-      console.error('Error updating quantity:', error);
-    }
-  };
-
-  const removeItem = async (itemId: string) => {
-    try {
-      const { error } = await supabase
-        .from('cart_items')
-        .delete()
-        .eq('id', itemId);
-
-      if (error) throw error;
-      
-      setCartItems(items => items.filter((item: any) => item.id !== itemId));
-    } catch (error) {
-      console.error('Error removing item:', error);
-    }
-  };
-
-  const calculateTotal = () => {
-    return cartItems.reduce((total: number, item: any) => {
-      return total + (item.products.price * item.quantity);
-    }, 0);
-  };
+  const subtotal = getCartTotal();
+  const shipping = 99;
+  const tax = Math.round(subtotal * 0.18);
+  const total = subtotal + shipping + tax;
 
   if (loading) {
     return (
@@ -147,7 +79,7 @@ const CartSection = () => {
                     ₹{(item.products.price * item.quantity).toLocaleString()}
                   </p>
                   <button
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeFromCart(item.id)}
                     className="text-red-500 hover:text-red-700 transition-colors mt-2"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -164,27 +96,30 @@ const CartSection = () => {
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal:</span>
-                  <span className="text-charcoal">₹{calculateTotal().toLocaleString()}</span>
+                  <span className="text-charcoal">₹{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping:</span>
-                  <span className="text-charcoal">₹99</span>
+                  <span className="text-charcoal">₹{shipping}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Tax:</span>
-                  <span className="text-charcoal">₹{Math.round(calculateTotal() * 0.18).toLocaleString()}</span>
+                  <span className="text-gray-600">Tax (18%):</span>
+                  <span className="text-charcoal">₹{tax.toLocaleString()}</span>
                 </div>
                 <div className="border-t border-gray-300 pt-2">
                   <div className="flex justify-between font-semibold text-lg">
                     <span className="text-charcoal">Total:</span>
                     <span className="text-charcoal">
-                      ₹{(calculateTotal() + 99 + Math.round(calculateTotal() * 0.18)).toLocaleString()}
+                      ₹{total.toLocaleString()}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <button className="w-full bg-forest-green text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition-colors flex items-center justify-center space-x-2">
+              <button 
+                onClick={onCheckout}
+                className="w-full bg-forest-green text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition-colors flex items-center justify-center space-x-2"
+              >
                 <CreditCard className="w-5 h-5" />
                 <span>Proceed to Checkout</span>
               </button>
