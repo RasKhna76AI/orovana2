@@ -167,48 +167,49 @@ const OrderSuccessPage = ({ sessionId, onContinueShopping }: OrderSuccessPagePro
                       </div>
                     </div>
                   </div>
-                </>
-              )}
+                </div>
+              </>
+            )}
 
-              {/* Next Steps */}
-              <div className="bg-beige rounded-lg p-6 mb-6">
-                <h3 className="text-lg font-semibold text-charcoal mb-4">What's Next?</h3>
-                <div className="space-y-3">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-forest-green text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
-                    <p className="text-gray-700">We'll send you an order confirmation email shortly</p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-forest-green text-white rounded-full flex items-center justify-center text-sm font-semibold">2</div>
-                    <p className="text-gray-700">Your order will be processed and prepared for shipping</p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-forest-green text-white rounded-full flex items-center justify-center text-sm font-semibold">3</div>
-                    <p className="text-gray-700">You'll receive tracking information once your order ships</p>
-                  </div>
+            {/* Next Steps */}
+            <div className="bg-beige rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-semibold text-charcoal mb-4">What's Next?</h3>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-forest-green text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
+                  <p className="text-gray-700">We'll send you an order confirmation email shortly</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-forest-green text-white rounded-full flex items-center justify-center text-sm font-semibold">2</div>
+                  <p className="text-gray-700">Your order will be processed and prepared for shipping</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-forest-green text-white rounded-full flex items-center justify-center text-sm font-semibold">3</div>
+                  <p className="text-gray-700">You'll receive tracking information once your order ships</p>
                 </div>
               </div>
+            </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={onContinueShopping}
-                  className="flex-1 bg-forest-green text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-800 transition-colors flex items-center justify-center space-x-2"
-                >
-                  <span>Continue Shopping</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-                
-                <button className="flex-1 border border-forest-green text-forest-green py-3 px-6 rounded-lg font-semibold hover:bg-forest-green hover:text-white transition-colors flex items-center justify-center space-x-2">
-                  <Download className="w-5 h-5" />
-                  <span>Download Invoice</span>
-                </button>
-              </div>
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={onContinueShopping}
+                className="flex-1 bg-forest-green text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-800 transition-colors flex items-center justify-center space-x-2"
+              >
+                <span>Continue Shopping</span>
+                <ArrowRight className="w-5 h-5" />
+              </button>
+              
+              <button className="flex-1 border border-forest-green text-forest-green py-3 px-6 rounded-lg font-semibold hover:bg-forest-green hover:text-white transition-colors flex items-center justify-center space-x-2">
+                <Download className="w-5 h-5" />
+                <span>Download Invoice</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default OrderSuccessPage;
